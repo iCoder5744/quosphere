@@ -1,7 +1,8 @@
 import React, { useState } from "react";
+import Image from "next/image";
 import { BsSearch } from "react-icons/bs";
 import { RiMenu2Line } from "react-icons/ri";
-import Sidebar from "../components/Sidebar"; // Import the Sidebar component from your sidebar folder
+import Sidebar from "./Sidebar"; // Import the Sidebar component from your sidebar folder
 
 const Navbar = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -28,7 +29,7 @@ const Navbar = () => {
           />
 
           {/* Logo */}
-          <img src="/logo.png" alt="Logo" className="h-10 md:w-[200px]" />
+          <Image src="/logo.png" alt="" width={200} height={50} className="md:w-[200px]" />
 
           {/* Profile Icon for Small Screens */}
           <div className="sm:hidden min-w-10 min-h-10 bg-gray-600 rounded-full"></div>
@@ -66,21 +67,19 @@ const Navbar = () => {
       {isSidebarOpen && (
         <>
           <div
-  style={{ backgroundColor: "rgba(31, 41, 55, 0.5)" }} // RGB color with 50% opacity
-  className={`fixed inset-0 z-40 transition-opacity duration-300 ${
-    isSidebarOpen ? "opacity-100" : "opacity-0 pointer-events-none"
-  }`}
-  onClick={closeSidebar}
-></div>
+            style={{ backgroundColor: "rgba(31, 41, 55, 0.5)" }} // RGB color with 50% opacity
+            className={`fixed inset-0 z-40 transition-opacity duration-300 ${isSidebarOpen ? "opacity-100" : "opacity-0 pointer-events-none"
+              }`}
+            onClick={closeSidebar}
+          ></div>
 
-{/* Sidebar */}
-<div
-  className={`fixed inset-y-0 left-0 w-64 bg-white z-50 transform transition-transform duration-300 ease-in-out ${
-    isSidebarOpen ? "translate-x-0" : "-translate-x-full"
-  }`}
->
-  <Sidebar closeSidebar={closeSidebar} />
-</div>
+          {/* Sidebar */}
+          <div
+            className={`fixed inset-y-0 left-0 w-64 bg-white z-50 transform transition-transform duration-300 ease-in-out ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"
+              }`}
+          >
+            <Sidebar closeSidebar={closeSidebar} />
+          </div>
         </>
       )}
     </>
