@@ -10,7 +10,7 @@ function MainLayout({ children }) {
       <Navbar />
 
       {/* Main Content - Scrollable inside the fixed Navbar */}
-      <div className="flex-1 overflow-y-auto bg-gray-100" style={{ height: "calc(100vh - 4rem)" }}>
+      <div className="flex-1 h-full" >
         {children}
       </div>
 
