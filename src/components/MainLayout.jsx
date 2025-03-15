@@ -20,8 +20,13 @@ function MainLayout({ children }) {
     }
   }, [user, loading, router, pathname]);
 
-  if (loading) return <p className="text-center">Loading...</p>;
-
+  if (loading) {
+    return (
+      <div className="h-screen flex items-center justify-center bg-white">
+        <div className="w-12 h-12 border-4 border-gray-300 border-t-blue-500 rounded-full animate-spin"></div>
+      </div>
+    );
+  }
   // Hide Navbar & Footer on auth pages
   const isAuthPage = authPages.includes(pathname);
 
