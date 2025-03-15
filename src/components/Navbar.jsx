@@ -11,12 +11,13 @@ import { useRouter } from "next/navigation";
 const Navbar = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
-  const { user: authUser } = useAuth(); // Get the logged-in user
+  const { user } = useAuth(); // Get the logged-in user
   const router = useRouter();
 
   const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
   const closeSidebar = () => setIsSidebarOpen(false);
   const toggleProfile = () => setIsProfileOpen(!isProfileOpen);
+  
   const handleLogout = async () => {
     await logOut();
     router.push("/auth/signin"); // Redirect to login after logout
@@ -37,7 +38,7 @@ const Navbar = () => {
           <Image src="/logo.png" alt="" width={200} height={20} className="h-10 md:w-[200px]" />
 
           {/* Login Button (Small Screens) */}
-          {!authUser && (
+          {!user && (
             <button
               onClick={() => router.push("/auth/signin")}
               className="sm:hidden bg-blue-500 text-white px-3 py-1 rounded-md"
@@ -47,7 +48,7 @@ const Navbar = () => {
           )}
 
           {/* Profile Icon (Small Screens) */}
-          {authUser && (
+          {user && (
             <div
               onClick={toggleProfile}
               className="sm:hidden min-w-10 min-h-10 bg-gray-600 rounded-full cursor-pointer"
@@ -79,7 +80,7 @@ const Navbar = () => {
           </div>
 
           {/* Login Button (Large Screens) */}
-          {!authUser && (
+          {!user && (
             <button
               onClick={() => router.push("/auth/signin")}
               className="hidden sm:block bg-blue-500 text-white px-3 py-1 rounded-md"
@@ -89,7 +90,7 @@ const Navbar = () => {
           )}
 
           {/* Profile Icon - Large Screens */}
-          {authUser && (
+          {user && (
             <div className="relative">
               <div
                 onClick={toggleProfile}
@@ -99,7 +100,7 @@ const Navbar = () => {
               {/* Profile Dropdown */}
               {isProfileOpen && (
                 <div className="absolute right-0 mt-2 w-40 bg-white shadow-lg rounded-md text-gray-700">
-                  <p className="p-2 text-center border-b">{authUser.email}</p>
+                  <p className="p-2 text-center border-b">{user.email}</p>
                   <button
                     onClick={handleLogout}
                     className="w-full text-left px-4 py-2 hover:bg-gray-100"

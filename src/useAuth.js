@@ -1,19 +1,22 @@
+"use client";
 import { useState, useEffect } from "react";
-import { User, onAuthStateChanged } from "firebase/auth";
-import { auth } from "./firebase"; // Ensure correct path
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from "./firebase";
 
 const useAuth = () => {
-  const [user, setUser] = useState(null); // ✅ Corrected
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (authUser) => {
-      setUser(authUser); // ✅ Ensures user is of type User or null
+      setUser(authUser);
+      setLoading(false);
     });
 
     return () => unsubscribe();
   }, []);
 
-  return { user };
+  return { user, loading };
 };
 
 export default useAuth;
