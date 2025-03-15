@@ -1,38 +1,58 @@
+"use client";
 import React, { useState } from "react";
 import Image from "next/image";
 import { BsSearch } from "react-icons/bs";
 import { RiMenu2Line } from "react-icons/ri";
-import Sidebar from "./Sidebar"; // Import the Sidebar component from your sidebar folder
+import Sidebar from "./Sidebar"; // Sidebar component
+import useAuth from "../useAuth"; // ✅ Ensure correct import
+import { logOut } from "../authService"; // Firebase logout function
+import { useRouter } from "next/navigation";
 
 const Navbar = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isProfileOpen, setIsProfileOpen] = useState(false);
+  const { user: authUser } = useAuth(); // Get the logged-in user
+  const router = useRouter();
 
-  const toggleSidebar = () => {
-    setIsSidebarOpen(!isSidebarOpen);
-  };
-
-  const closeSidebar = () => {
-    setIsSidebarOpen(false);
+  const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
+  const closeSidebar = () => setIsSidebarOpen(false);
+  const toggleProfile = () => setIsProfileOpen(!isProfileOpen);
+  const handleLogout = async () => {
+    await logOut();
+    router.push("/auth/signin"); // Redirect to login after logout
   };
 
   return (
     <>
       {/* Navbar */}
-      <nav className="fixed top-0  w-full h-16 flex items-center justify-between px-2 sm:px-3 md:px-4 bg-gray-50 text-white">
+      <nav className="fixed top-0 w-full h-16 flex items-center justify-between px-2 sm:px-3 md:px-4 bg-gray-50 text-white">
         {/* Left Side - Logo and Menu Icon */}
         <div className="w-full md:w-fit flex items-center max-sm:justify-between">
-          {/* Menu Icon - Visible when nav links are hidden (below md) */}
           <RiMenu2Line
             size={28}
             className="md:hidden cursor-pointer text-gray-600 mr-2"
             onClick={toggleSidebar}
           />
 
-          {/* Logo */}
           <Image src="/logo.png" alt="" width={200} height={20} className="h-10 md:w-[200px]" />
 
-          {/* Profile Icon for Small Screens */}
-          <div className="sm:hidden min-w-10 min-h-10 bg-gray-600 rounded-full"></div>
+          {/* Login Button (Small Screens) */}
+          {!authUser && (
+            <button
+              onClick={() => router.push("/auth/signin")}
+              className="sm:hidden bg-blue-500 text-white px-3 py-1 rounded-md"
+            >
+              Login
+            </button>
+          )}
+
+          {/* Profile Icon (Small Screens) */}
+          {authUser && (
+            <div
+              onClick={toggleProfile}
+              className="sm:hidden min-w-10 min-h-10 bg-gray-600 rounded-full cursor-pointer"
+            ></div>
+          )}
         </div>
 
         {/* Right Side - Search Bar, Links & Profile */}
@@ -58,8 +78,38 @@ const Navbar = () => {
             <a href="#" className="hover:text-gray-400">Topest</a>
           </div>
 
-          {/* Profile Icon - Hidden on Small Screens */}
-          <div className="max-sm:hidden min-w-10 min-h-10 bg-gray-600 rounded-full"></div>
+          {/* Login Button (Large Screens) */}
+          {!authUser && (
+            <button
+              onClick={() => router.push("/auth/signin")}
+              className="hidden sm:block bg-blue-500 text-white px-3 py-1 rounded-md"
+            >
+              Login
+            </button>
+          )}
+
+          {/* Profile Icon - Large Screens */}
+          {authUser && (
+            <div className="relative">
+              <div
+                onClick={toggleProfile}
+                className="max-sm:hidden min-w-10 min-h-10 bg-gray-600 rounded-full cursor-pointer"
+              ></div>
+
+              {/* Profile Dropdown */}
+              {isProfileOpen && (
+                <div className="absolute right-0 mt-2 w-40 bg-white shadow-lg rounded-md text-gray-700">
+                  <p className="p-2 text-center border-b">{authUser.email}</p>
+                  <button
+                    onClick={handleLogout}
+                    className="w-full text-left px-4 py-2 hover:bg-gray-100"
+                  >
+                    Logout
+                  </button>
+                </div>
+              )}
+            </div>
+          )}
         </div>
       </nav>
 
