@@ -18,7 +18,7 @@ const Navbar = () => {
   return (
     <>
       {/* Navbar */}
-      <nav className="w-full h-16 flex items-center justify-between px-2 sm:px-3 md:px-4 bg-gray-50 text-white">
+      <nav className="fixed top-0  w-full h-16 flex items-center justify-between px-2 sm:px-3 md:px-4 bg-gray-50 text-white">
         {/* Left Side - Logo and Menu Icon */}
         <div className="w-full md:w-fit flex items-center max-sm:justify-between">
           {/* Menu Icon - Visible when nav links are hidden (below md) */}
@@ -29,7 +29,7 @@ const Navbar = () => {
           />
 
           {/* Logo */}
-          <Image src="/logo.png" alt="" width={200} height={50} className="md:w-[200px]" />
+          <Image src="/logo.png" alt="" width={200} height={20} className="h-10 md:w-[200px]" />
 
           {/* Profile Icon for Small Screens */}
           <div className="sm:hidden min-w-10 min-h-10 bg-gray-600 rounded-full"></div>
